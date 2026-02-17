@@ -1,16 +1,23 @@
 import { serve } from "@hono/node-server";
-import 'dotenv/config';
-import { drizzle } from 'drizzle-orm/node-postgres';
+import { serveStatic } from "@hono/node-server/serve-static";
+import "dotenv/config";
+import { drizzle } from "drizzle-orm/node-postgres";
 import { Hono } from "hono";
-import { renderToString } from "react-dom/server";
-import LoginPage from "./pages/login";
+import LoginPage from "./pages/login.js";
 
 const db = drizzle(process.env.DATABASE_URL!);
 const app = new Hono();
 
+app.use("/styles/*", serveStatic({ root: "./src" }));
+
 app.get("/auth/login", (c) => {
-  const html = renderToString(<LoginPage />);
-  return c.html(html);
+  return c.html(<LoginPage />);
+});
+
+app.post("/api/auth/login", async (c) => {
+  const { email } = await c.req.json();
+
+  return c.json({ email });
 });
 
 serve(

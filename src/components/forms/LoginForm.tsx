@@ -1,33 +1,18 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm, type SubmitHandler } from "react-hook-form";
-import { loginSchema } from "../../schemas/loginSchema";
-
-interface IFormInput {
-  email: string;
-  password: string;
-}
-
-const LoginForm = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IFormInput>({ resolver: yupResolver(loginSchema) });
-  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
-
+export const LoginForm = () => {
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <label>Email:</label>
-      <input {...register("email")} type="email" required />
-      <p>{errors.email?.message}</p>
+    <form method="post" action="/api/auth/login">
+      <div className="form-group">
+        <label htmlFor="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          placeholder="votre@email.com"
+          required
+        />
+      </div>
 
-      <label>Password:</label>
-      <input {...register("password")} type="password" required />
-      <p>{errors.password?.message}</p>
-
-      <input type="submit" />
+      <input type="submit" value="Se connecter" />
     </form>
   );
 };
-
-export default LoginForm;
