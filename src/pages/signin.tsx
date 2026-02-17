@@ -1,6 +1,6 @@
-import { LoginForm } from "../components/forms/LoginForm.js";
+import { SignInForm } from "../components/forms/SignInForm.js";
 
-const LoginPage = () => {
+const SignInPage = ({ isFirstTime = false, email }: { isFirstTime?: boolean; email?: string }) => {
   return (
     <html lang="fr">
       <head>
@@ -11,12 +11,12 @@ const LoginPage = () => {
       </head>
       <body>
         <div>
-          <h1>Login Page</h1>
-          <LoginForm />
+          <h1>Sign in</h1>
+          <SignInForm isFirstTime={isFirstTime} email={email} />
         </div>
       </body>
     </html>
   );
 };
 
-export default LoginPage;
+export default SignInPage;
