@@ -1,25 +1,6 @@
-type SignInFormProps = {
-  isFirstTime: boolean;
-  email?: string;
-};
-
-export const SignInForm = ({ isFirstTime, email }: SignInFormProps) => {
+export const SignInForm = ({ email }: { email?: string }) => {
   return (
     <form method="post" action="/auth/signin">
-      {isFirstTime && (
-        <>
-          <h1>Création de votre compte</h1>
-
-          <div className="form-group">
-            <label htmlFor="firstName">Prénom</label>
-            <input id="firstName" name="firstName" type="text" required />
-
-            <label htmlFor="lastName">Nom</label>
-            <input id="lastName" name="lastName" type="text" required />
-          </div>
-        </>
-      )}
-
       <div className="form-group">
         <label htmlFor="email">Email</label>
         <input
@@ -33,5 +14,5 @@ export const SignInForm = ({ isFirstTime, email }: SignInFormProps) => {
 
       <input type="submit" value="Se connecter" />
     </form>
-  );
-};
+  )
+}

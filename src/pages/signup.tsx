@@ -1,22 +1,22 @@
-import { SignInForm } from "../components/forms/SignInForm.js"
+import { SignUpForm } from "../components/forms/SignUpForm.js"
 
-const SignInPage = ({ email }: { email?: string }) => {
+const SignUpPage = ({ email }: { email?: string }) => {
   return (
     <html lang="fr">
       <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Lootopia - Connexion</title>
+        <title>Lootopia - Inscription</title>
         <link rel="stylesheet" href="/styles/globals.css" />
       </head>
       <body>
         <div class="card">
-          <h1>Connexion à votre compte</h1>
-          <SignInForm email={email} />
+          <h1>Inscription à votre compte</h1>
+          <SignUpForm email={email} />
         </div>
       </body>
     </html>
   )
 }
 
-export default SignInPage
+export default SignUpPage

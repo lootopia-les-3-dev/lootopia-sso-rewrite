@@ -6,7 +6,7 @@ const setCookieController = async (c: Context) => {
   const email = body.email as string
 
   if (!email) {
-    return c.json({ success: false, error: "Email is required." }, 400)
+    return c.json({ error: "Email is required." }, 400)
   }
 
   await setSignedCookie(c, "auth_token", email, process.env.JWT_SECRET!, {
