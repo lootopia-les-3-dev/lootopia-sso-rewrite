@@ -1,8 +1,10 @@
 import { Hono } from "hono"
-import signInController from "../controllers/signin.js"
-import setCookieController from "../controllers/setCookie.js"
+import { signInController } from "../controllers/auth/signInController.js"
+import { signUpController } from "../controllers/auth/signUpController.js"
+import { verifyController } from "../controllers/auth/verifyController.js"
 
 export const AuthAPI = new Hono()
 
+AuthAPI.post("/signup", signUpController)
 AuthAPI.post("/signin", signInController)
-AuthAPI.get("/set/:email", setCookieController)
+AuthAPI.get("/verify", verifyController)

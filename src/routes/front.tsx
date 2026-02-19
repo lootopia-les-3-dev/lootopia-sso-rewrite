@@ -1,59 +1,39 @@
 import { Hono } from "hono"
-import SignInPage from "../pages/signin.js"
-import { getUserByEmail } from "../utils/users/getUserByEmail.js"
-import { createUser } from "../utils/users/createUser.js"
-import setCookieController from "../controllers/setCookie.js"
-import SignUpPage from "../pages/signup.js"
+import AuthPage from "../pages/auth.js"
 
 export const Front = new Hono()
 
 Front.get("/auth/signin", (c) => {
-  return c.html(<SignInPage />)
-})
-
-Front.post("/auth/signin", async (c) => {
-  const body = await c.req.parseBody()
-  const email = body.email as string
-
-  if (!email) {
-    return c.json({ error: "Email is required" }, 400)
-  }
-
-  const user = await getUserByEmail(email)
-
-  if (!user) {
-    return c.redirect("/auth/signup?email=" + encodeURIComponent(email))
-  }
-
-  await setCookieController(c)
-
-  return c.redirect("verify")
+  const email = c.req.query("email")
+  const callbackUrl = c.req.query("callback_url")
+  return c.html(<AuthPage mode="signin" email={email} callbackUrl={callbackUrl} />)
 })
 
 Front.get("/auth/signup", (c) => {
   const email = c.req.query("email")
-  return c.html(<SignUpPage email={email} />)
+  const callbackUrl = c.req.query("callback_url")
+  return c.html(<AuthPage mode="signup" email={email} callbackUrl={callbackUrl} />)
 })
 
-Front.post("/auth/signup", async (c) => {
-  const body = await c.req.parseBody()
-  const firstName = body.firstName as string
-  const lastName = body.lastName as string
-  const email = body.email as string
-
-  if (!firstName || !lastName || !email) {
-    return c.json({ error: "All fields are required" }, 400)
-  }
-
-  let user = await getUserByEmail(email)
-
-  if (user) {
-    return c.json({ error: "User already exists" }, 400)
-  }
-
-  user = await createUser(firstName, lastName, email)
-
-  await setCookieController(c)
-
-  return c.redirect("verify")
+Front.get("/auth/success", (c) => {
+  return c.html(
+    <html lang="fr">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Lootopia - Connexion réussie</title>
+        <link rel="stylesheet" href="/styles/globals.css" />
+      </head>
+      <body>
+        <div class="card">
+          <h1>Connexion réussie !</h1>
+          <p>
+            Votre compte a été vérifié avec succès. Vous pouvez maintenant
+            fermer cette page.
+          </p>
+        </div>
+      </body>
+    </html>,
+  )
 })
+

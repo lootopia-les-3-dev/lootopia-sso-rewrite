@@ -1,30 +1,20 @@
-import axios from "axios"
 import type { Context } from "hono"
+import { sendEmail } from "../../utils/send/sendEmail.js"
 
 const sendEmailController = async (c: Context) => {
-  const { to, subject, text } = await c.req.json()
+  const { to, subject, body } = await c.req.json()
 
-  if (!to || !subject || !text) {
+  if (!to || !subject || !body) {
     return c.json(
       {
         error: "Missing required fields",
-        missing: !to ? "to" : !subject ? "subject" : "text",
+        missing: !to ? "to" : !subject ? "subject" : "body",
       },
       400,
     )
   }
 
-  await axios.post(
-    process.env.NOTIFS_API_URL + "/send/email",
-    {
-      to,
-      subject,
-      text,
-    },
-    {
-      headers: { "x-api-key": process.env.NOTIFS_API_KEY },
-    },
-  )
+  await sendEmail(to, subject, body)
 
   return c.json({ message: "Email sent successfully" })
 }
