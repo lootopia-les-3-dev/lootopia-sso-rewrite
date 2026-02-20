@@ -25,11 +25,16 @@ export const verifyController = async (c: Context) => {
 
   await verifyUser(record.userId)
   await deleteVerificationToken(record.id)
-  await setAuthCookie(c, record.userId)
 
   const user = await getUserById(record.userId)
 
-  if (user?.firstName && user?.lastName) {
+  if (!user) {
+    return c.json({ error: "User not found" }, 400)
+  }
+
+  await setAuthCookie(c, user.id, user.email)
+
+  if (user.firstName && user.lastName) {
     return c.redirect(record.callbackUrl ?? "/auth/success")
   }
 
