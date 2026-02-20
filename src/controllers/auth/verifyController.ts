@@ -1,9 +1,8 @@
 import type { Context } from "hono"
-import { eq } from "drizzle-orm"
-import db from "../../db/connection.js"
-import { users, verificationTokens } from "../../db/schema.js"
 import { getVerificationToken } from "../../utils/tokens/getVerificationToken.js"
+import { deleteVerificationToken } from "../../utils/tokens/deleteVerificationToken.js"
 import { verifyUser } from "../../utils/users/verifyUser.js"
+import { getUserById } from "../../utils/users/getUserById.js"
 import { setAuthCookie } from "../setCookie.js"
 
 export const verifyController = async (c: Context) => {
@@ -20,20 +19,15 @@ export const verifyController = async (c: Context) => {
   }
 
   if (new Date() > record.expiresAt) {
-    await db
-      .delete(verificationTokens)
-      .where(eq(verificationTokens.id, record.id))
+    await deleteVerificationToken(record.id)
     return c.json({ error: "Token expired" }, 400)
   }
 
   await verifyUser(record.userId)
-  await db
-    .delete(verificationTokens)
-    .where(eq(verificationTokens.id, record.id))
+  await deleteVerificationToken(record.id)
   await setAuthCookie(c, record.userId)
 
-  const userResult = await db.select().from(users).where(eq(users.id, record.userId))
-  const user = userResult[0]
+  const user = await getUserById(record.userId)
 
   if (user?.firstName && user?.lastName) {
     return c.redirect(record.callbackUrl ?? "/auth/success")

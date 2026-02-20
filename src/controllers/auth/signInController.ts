@@ -15,9 +15,7 @@ export const signInController = async (c: Context) => {
   const user = await getUserByEmail(email)
 
   if (!user) {
-    const params = new URLSearchParams({ email })
-    if (callbackUrl) params.set("callback_url", callbackUrl)
-    return c.redirect("/auth/signup?" + params.toString())
+    return c.redirect("/auth/verify")
   }
 
   if (!user.verified) {

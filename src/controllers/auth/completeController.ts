@@ -1,8 +1,6 @@
 import type { Context } from "hono"
 import { getSignedCookie } from "hono/cookie"
-import { eq } from "drizzle-orm"
-import db from "../../db/connection.js"
-import { users } from "../../db/schema.js"
+import { updateUserProfile } from "../../utils/users/updateUserProfile.js"
 
 export const completeController = async (c: Context) => {
   const userId = await getSignedCookie(c, process.env.JWT_SECRET!, "auth_token")
@@ -20,10 +18,7 @@ export const completeController = async (c: Context) => {
     return c.json({ error: "First name and last name are required" }, 400)
   }
 
-  await db
-    .update(users)
-    .set({ firstName, lastName })
-    .where(eq(users.id, Number(userId)))
+  await updateUserProfile(Number(userId), { firstName, lastName })
 
   return c.redirect(callbackUrl ?? "/auth/success")
 }

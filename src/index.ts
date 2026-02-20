@@ -7,11 +7,12 @@ import { Front } from "./routes/front.js"
 
 const app = new Hono()
 
-// Serve static assets (CSS, etc.) from src/
 app.use("/styles/*", serveStatic({ root: "./src" }))
 
 app.route("/api", API)
 app.route("/", Front)
+
+app.notFound((c) => c.redirect("/auth"))
 
 serve(
   {

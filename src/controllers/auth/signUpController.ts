@@ -16,9 +16,12 @@ export const signUpController = async (c: Context) => {
   const existingUser = await getUserByEmail(email)
 
   if (existingUser) {
-    const params = new URLSearchParams({ email })
-    if (callbackUrl) params.set("callback_url", callbackUrl)
-    return c.redirect("/auth/signin?" + params.toString())
+    await sendEmail(
+      email,
+      "Tentative de création de compte Lootopia",
+      `Un compte existe déjà avec cette adresse. Si vous souhaitez vous connecter, rendez-vous sur ${process.env.BASE_URL}/auth/signin.`,
+    )
+    return c.redirect("/auth/verify")
   }
 
   const newUser = await createUser(email)
