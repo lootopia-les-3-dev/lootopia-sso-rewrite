@@ -8,8 +8,8 @@ import {
 
 export const users = pgTable("users", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  firstName: varchar("first_name", { length: 255 }).notNull(),
-  lastName: varchar("last_name", { length: 255 }).notNull(),
+  firstName: varchar("first_name", { length: 255 }),
+  lastName: varchar("last_name", { length: 255 }),
   email: varchar({ length: 255 }).notNull().unique(),
   verified: boolean().notNull().default(false),
   createdAt: timestamp("created_at", { withTimezone: true })

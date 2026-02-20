@@ -1,18 +1,18 @@
-const VerifyPage = () => {
+const SuccessPage = () => {
   return (
     <html lang="fr">
       <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Lootopia - Vérification de votre email</title>
+        <title>Lootopia - Connexion réussie</title>
         <link rel="stylesheet" href="/styles/globals.css" />
       </head>
       <body>
         <div class="card">
-          <h1>Vérifiez votre email</h1>
+          <h1>Connexion réussie !</h1>
           <p>
-            Un lien de connexion vous a été envoyé. Veuillez cliquer sur le lien
-            dans cet email pour continuer.
+            Votre compte a été vérifié avec succès. Vous pouvez maintenant
+            fermer cette page.
           </p>
         </div>
       </body>
@@ -20,4 +20,4 @@ const VerifyPage = () => {
   )
 }
 
-export default VerifyPage
+export default SuccessPage

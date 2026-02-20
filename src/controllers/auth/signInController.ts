@@ -22,7 +22,7 @@ export const signInController = async (c: Context) => {
 
   if (!user.verified) {
     const token = await createVerificationToken(user.id, callbackUrl)
-    const verifyUrl = `${process.env.BASE_URL}/auth/verify?token=${token}`
+    const verifyUrl = `${process.env.BASE_URL}/api/auth/verify?token=${token}`
     await sendEmail(
       email,
       "Vérification de votre compte Lootopia",
@@ -32,7 +32,7 @@ export const signInController = async (c: Context) => {
   }
 
   const token = await createVerificationToken(user.id, callbackUrl)
-  const verifyUrl = `${process.env.BASE_URL}/auth/verify?token=${token}`
+  const verifyUrl = `${process.env.BASE_URL}/api/auth/verify?token=${token}`
 
   await sendEmail(
     email,

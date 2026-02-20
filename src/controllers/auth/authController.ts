@@ -4,7 +4,7 @@ import { createUser } from "../../utils/users/createUser.js"
 import { createVerificationToken } from "../../utils/tokens/createVerificationToken.js"
 import { sendEmail } from "../../utils/send/sendEmail.js"
 
-export const signUpController = async (c: Context) => {
+export const authController = async (c: Context) => {
   const body = await c.req.parseBody()
   const email = body.email as string
   const callbackUrl = body.callback_url as string | undefined
@@ -13,23 +13,19 @@ export const signUpController = async (c: Context) => {
     return c.json({ error: "Email is required" }, 400)
   }
 
-  const existingUser = await getUserByEmail(email)
+  let user = await getUserByEmail(email)
 
-  if (existingUser) {
-    const params = new URLSearchParams({ email })
-    if (callbackUrl) params.set("callback_url", callbackUrl)
-    return c.redirect("/auth/signin?" + params.toString())
+  if (!user) {
+    user = await createUser(email)
   }
 
-  const newUser = await createUser(email)
-
-  const token = await createVerificationToken(newUser.id, callbackUrl)
+  const token = await createVerificationToken(user.id, callbackUrl)
   const verifyUrl = `${process.env.BASE_URL}/api/auth/verify?token=${token}`
 
   await sendEmail(
     email,
-    "Vérification de votre compte Lootopia",
-    `Cliquez sur ce lien pour vérifier votre compte : ${verifyUrl}`,
+    "Connexion à Lootopia",
+    `Cliquez sur ce lien pour vous connecter : ${verifyUrl}`,
   )
 
   return c.redirect("/auth/verify")
