@@ -8,10 +8,11 @@ import { Front } from "./routes/front.js"
 const app = new Hono()
 
 app.use("/styles/*", serveStatic({ root: "./src" }))
+app.use("/fonts/*", serveStatic({ root: "./public" }))
 
 app.route("/api", API)
 app.route("/", Front)
-
+  
 app.notFound((c) => c.redirect("/auth"))
 
 serve(
