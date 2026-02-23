@@ -1,0 +1,25 @@
+import { getUserByEmail } from "../../utils/users/getUserByEmail.js";
+import { createVerificationToken } from "../../utils/tokens/createVerificationToken.js";
+import { sendEmail } from "../../utils/send/sendEmail.js";
+export const signInController = async (c) => {
+    const body = await c.req.parseBody();
+    const email = body.email;
+    const callbackUrl = body.callback_url;
+    if (!email) {
+        return c.json({ error: "Email is required" }, 400);
+    }
+    const user = await getUserByEmail(email);
+    if (!user) {
+        return c.redirect("/auth/verify");
+    }
+    if (!user.verified) {
+        const token = await createVerificationToken(user.id, callbackUrl);
+        const verifyUrl = `${process.env.BASE_URL}/api/auth/verify?token=${token}`;
+        await sendEmail(email, "Vérification de votre compte Lootopia", `Cliquez sur ce lien pour vérifier votre compte : ${verifyUrl}`);
+        return c.redirect("/auth/verify");
+    }
+    const token = await createVerificationToken(user.id, callbackUrl);
+    const verifyUrl = `${process.env.BASE_URL}/api/auth/verify?token=${token}`;
+    await sendEmail(email, "Connexion à Lootopia", `Cliquez sur ce lien pour vous connecter : ${verifyUrl}`);
+    return c.redirect("/auth/verify");
+};
