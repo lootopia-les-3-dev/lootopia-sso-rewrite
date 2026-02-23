@@ -11,8 +11,8 @@ export const setAuthCookie = async (c: Context, userId: number, email: string) =
   const token = await sign(payload, process.env.JWT_SECRET!)
   setCookie(c, "auth_token", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    domain: process.env.NODE_ENV === "production" ? ".lootopia.io" : undefined,
+    secure: true,
+    domain: ".lootopia.io",
     sameSite: "Lax",
     path: "/",
     maxAge: 60 * 60 * 24 * 7,
