@@ -1,6 +1,6 @@
 import type { Context } from "hono"
 import { sign } from "hono/jwt"
-import { setCookie, setSignedCookie } from "hono/cookie"
+import { setSignedCookie } from "hono/cookie"
 import type { User } from "../types/user.js"
 
 export const setCookieController = async (c: Context, user: User) => {
