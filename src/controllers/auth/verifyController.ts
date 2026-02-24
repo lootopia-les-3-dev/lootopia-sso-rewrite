@@ -32,7 +32,7 @@ export const verifyController = async (c: Context) => {
     return c.json({ error: "User not found" }, 400)
   }
 
-  await setCookieController(c, user.id, user.email)
+  await setCookieController(c, user)
 
   if (user.firstName && user.lastName) {
     return c.redirect(callbackUrl)
