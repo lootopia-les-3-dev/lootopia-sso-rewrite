@@ -4,15 +4,15 @@ import { verify } from "hono/jwt"
 import { updateUserProfile } from "../../utils/users/updateUserProfile.js"
 
 export const completeController = async (c: Context) => {
-  const rawToken = getCookie(c, "auth_token")
+  const token = getCookie(c, "auth_token")
 
-  if (!rawToken) {
+  if (!token) {
     return c.redirect("/login")
   }
 
   let userId: number
   try {
-    const payload = await verify(rawToken, process.env.JWT_SECRET!, "HS256")
+    const payload = await verify(token, process.env.JWT_SECRET!, "HS256")
     userId = Number(payload.sub)
   } catch {
     return c.redirect("/login")
@@ -21,7 +21,7 @@ export const completeController = async (c: Context) => {
   const body = await c.req.parseBody()
   const firstName = body.firstName as string
   const lastName = body.lastName as string
-  const callbackUrl = body.callback_url as string | undefined
+  const callbackUrl = body.callbackUrl as string
 
   if (!firstName || !lastName) {
     return c.json({ error: "First name and last name are required" }, 400)
@@ -29,5 +29,5 @@ export const completeController = async (c: Context) => {
 
   await updateUserProfile(userId, { firstName, lastName })
 
-  return c.redirect(callbackUrl ?? "/success")
+  return c.redirect(callbackUrl)
 }

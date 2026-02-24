@@ -1,11 +1,6 @@
 import { LoginForm } from "../components/forms/LoginForm.js"
 
-type LoginPageProps = {
-  email?: string
-  callbackUrl?: string
-}
-
-const LoginPage = ({ email, callbackUrl }: LoginPageProps) => {
+const LoginPage = ({ callbackUrl }: { callbackUrl: string }) => {
   return (
     <html lang="fr">
       <head>
@@ -17,7 +12,7 @@ const LoginPage = ({ email, callbackUrl }: LoginPageProps) => {
       <body>
         <div class="card">
           <h1>Connexion à Lootopia</h1>
-          <LoginForm email={email} callbackUrl={callbackUrl} />
+          <LoginForm callbackUrl={callbackUrl} />
         </div>
       </body>
     </html>

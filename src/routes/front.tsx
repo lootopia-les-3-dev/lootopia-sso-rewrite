@@ -7,9 +7,8 @@ import VerifyPage from "../pages/verify.js"
 export const Front = new Hono()
 
 Front.get("/login", (c) => {
-  const email = c.req.query("email")
-  const callbackUrl = c.req.query("callback_url")
-  return c.html(<LoginPage email={email} callbackUrl={callbackUrl} />)
+  const { callbackUrl } = c.req.query()
+  return c.html(<LoginPage callbackUrl={callbackUrl} />)
 })
 
 Front.get("/verify", (c) => {
@@ -17,7 +16,7 @@ Front.get("/verify", (c) => {
 })
 
 Front.get("/complete", (c) => {
-  const callbackUrl = c.req.query("callback_url")
+  const callbackUrl = c.req.query("callbackUrl")
   return c.html(<CompletePage callbackUrl={callbackUrl} />)
 })
 

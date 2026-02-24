@@ -1,12 +1,12 @@
 import type { Context } from "hono"
-import { getVerificationToken } from "../../utils/tokens/getVerificationToken.js"
 import { deleteVerificationToken } from "../../utils/tokens/deleteVerificationToken.js"
-import { verifyUser } from "../../utils/users/verifyUser.js"
+import { getVerificationToken } from "../../utils/tokens/getVerificationToken.js"
 import { getUserById } from "../../utils/users/getUserById.js"
+import { verifyUser } from "../../utils/users/verifyUser.js"
 import { setCookieController } from "../setCookie.js"
 
 export const verifyController = async (c: Context) => {
-  const token = c.req.query("token")
+  const { token, callbackUrl } = c.req.query()
 
   if (!token) {
     return c.json({ error: "Token is required" }, 400)
@@ -35,10 +35,10 @@ export const verifyController = async (c: Context) => {
   await setCookieController(c, user.id, user.email)
 
   if (user.firstName && user.lastName) {
-    return c.redirect(record.callbackUrl ?? "/success")
+    return c.redirect(callbackUrl)
   }
 
   const params = new URLSearchParams()
-  if (record.callbackUrl) params.set("callback_url", record.callbackUrl)
+  if (callbackUrl) params.set("callbackUrl", callbackUrl)
   return c.redirect("/complete" + (params.size ? "?" + params.toString() : ""))
 }

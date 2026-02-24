@@ -16,7 +16,7 @@ const CompletePage = ({ callbackUrl }: CompletePageProps) => {
           <h1>Compléter votre profil</h1>
           <form method="post" action="/api/auth/complete">
             {callbackUrl && (
-              <input type="hidden" name="callback_url" value={callbackUrl} />
+              <input type="hidden" name="callbackUrl" value={callbackUrl} />
             )}
             <div class="form-group">
               <label for="firstName">Prénom</label>
