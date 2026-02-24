@@ -13,7 +13,7 @@ app.use("/fonts/*", serveStatic({ root: "./public" }))
 app.route("/api", API)
 app.route("/", Front)
   
-app.notFound((c) => c.redirect("/auth"))
+app.notFound((c) => c.redirect("/login"))
 
 serve(
   {

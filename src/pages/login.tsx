@@ -1,11 +1,11 @@
-import { AuthForm } from "../components/forms/AuthForm.js"
+import { LoginForm } from "../components/forms/LoginForm.js"
 
-type AuthPageProps = {
+type LoginPageProps = {
   email?: string
   callbackUrl?: string
 }
 
-const AuthPage = ({ email, callbackUrl }: AuthPageProps) => {
+const LoginPage = ({ email, callbackUrl }: LoginPageProps) => {
   return (
     <html lang="fr">
       <head>
@@ -17,11 +17,11 @@ const AuthPage = ({ email, callbackUrl }: AuthPageProps) => {
       <body>
         <div class="card">
           <h1>Connexion à Lootopia</h1>
-          <AuthForm email={email} callbackUrl={callbackUrl} />
+          <LoginForm email={email} callbackUrl={callbackUrl} />
         </div>
       </body>
     </html>
   )
 }
 
-export default AuthPage
+export default LoginPage

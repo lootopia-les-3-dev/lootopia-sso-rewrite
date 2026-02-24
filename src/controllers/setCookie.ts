@@ -2,7 +2,7 @@ import type { Context } from "hono"
 import { sign } from "hono/jwt"
 import { setCookie } from "hono/cookie"
 
-export const setAuthCookie = async (c: Context, userId: number, email: string) => {
+export const setCookieController = async (c: Context, userId: number, email: string) => {
   const payload = {
     sub: String(userId),
     email,
@@ -19,4 +19,4 @@ export const setAuthCookie = async (c: Context, userId: number, email: string) =
   })
 }
 
-export default setAuthCookie
+export default setCookieController

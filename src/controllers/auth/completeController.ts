@@ -7,7 +7,7 @@ export const completeController = async (c: Context) => {
   const rawToken = getCookie(c, "auth_token")
 
   if (!rawToken) {
-    return c.redirect("/auth/signin")
+    return c.redirect("/login")
   }
 
   let userId: number
@@ -15,7 +15,7 @@ export const completeController = async (c: Context) => {
     const payload = await verify(rawToken, process.env.JWT_SECRET!, "HS256")
     userId = Number(payload.sub)
   } catch {
-    return c.redirect("/auth/signin")
+    return c.redirect("/login")
   }
 
   const body = await c.req.parseBody()
@@ -29,5 +29,5 @@ export const completeController = async (c: Context) => {
 
   await updateUserProfile(userId, { firstName, lastName })
 
-  return c.redirect(callbackUrl ?? "/auth/success")
+  return c.redirect(callbackUrl ?? "/success")
 }

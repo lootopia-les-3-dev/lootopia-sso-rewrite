@@ -1,11 +1,11 @@
-type AuthFormProps = {
+type LoginFormProps = {
   email?: string
   callbackUrl?: string
 }
 
-export const AuthForm = ({ email, callbackUrl }: AuthFormProps) => {
+export const LoginForm = ({ email, callbackUrl }: LoginFormProps) => {
   return (
-    <form method="post" action="/api/auth">
+    <form method="post" action="/api/auth/login">
       {callbackUrl && <input type="hidden" name="callback_url" value={callbackUrl} />}
 
       <div class="form-group">

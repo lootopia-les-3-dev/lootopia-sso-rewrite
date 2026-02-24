@@ -1,33 +1,15 @@
 import { Hono } from "hono"
-import AuthPage from "../pages/auth.js"
 import CompletePage from "../pages/complete.js"
+import LoginPage from "../pages/login.js"
 import SuccessPage from "../pages/success.js"
 import VerifyPage from "../pages/verify.js"
 
-export const Front = new Hono().basePath("/auth")
+export const Front = new Hono()
 
-Front.get("/", (c) => {
+Front.get("/login", (c) => {
   const email = c.req.query("email")
   const callbackUrl = c.req.query("callback_url")
-  return c.html(<AuthPage email={email} callbackUrl={callbackUrl} />)
-})
-
-Front.get("/signin", (c) => {
-  const email = c.req.query("email")
-  const callbackUrl = c.req.query("callback_url")
-  const params = new URLSearchParams()
-  if (email) params.set("email", email)
-  if (callbackUrl) params.set("callback_url", callbackUrl)
-  return c.redirect("/auth" + (params.size ? "?" + params.toString() : ""))
-})
-
-Front.get("/signup", (c) => {
-  const email = c.req.query("email")
-  const callbackUrl = c.req.query("callback_url")
-  const params = new URLSearchParams()
-  if (email) params.set("email", email)
-  if (callbackUrl) params.set("callback_url", callbackUrl)
-  return c.redirect("/auth" + (params.size ? "?" + params.toString() : ""))
+  return c.html(<LoginPage email={email} callbackUrl={callbackUrl} />)
 })
 
 Front.get("/verify", (c) => {

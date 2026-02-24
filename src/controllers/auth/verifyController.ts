@@ -3,7 +3,7 @@ import { getVerificationToken } from "../../utils/tokens/getVerificationToken.js
 import { deleteVerificationToken } from "../../utils/tokens/deleteVerificationToken.js"
 import { verifyUser } from "../../utils/users/verifyUser.js"
 import { getUserById } from "../../utils/users/getUserById.js"
-import { setAuthCookie } from "../setCookie.js"
+import { setCookieController } from "../setCookie.js"
 
 export const verifyController = async (c: Context) => {
   const token = c.req.query("token")
@@ -32,13 +32,13 @@ export const verifyController = async (c: Context) => {
     return c.json({ error: "User not found" }, 400)
   }
 
-  await setAuthCookie(c, user.id, user.email)
+  await setCookieController(c, user.id, user.email)
 
   if (user.firstName && user.lastName) {
-    return c.redirect(record.callbackUrl ?? "/auth/success")
+    return c.redirect(record.callbackUrl ?? "/success")
   }
 
   const params = new URLSearchParams()
   if (record.callbackUrl) params.set("callback_url", record.callbackUrl)
-  return c.redirect("/auth/complete" + (params.size ? "?" + params.toString() : ""))
+  return c.redirect("/complete" + (params.size ? "?" + params.toString() : ""))
 }

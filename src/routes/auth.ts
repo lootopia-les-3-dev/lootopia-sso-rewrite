@@ -1,14 +1,10 @@
 import { Hono } from "hono"
-import { authController } from "../controllers/auth/authController.js"
-import { signInController } from "../controllers/auth/signInController.js"
-import { signUpController } from "../controllers/auth/signUpController.js"
 import { verifyController } from "../controllers/auth/verifyController.js"
 import { completeController } from "../controllers/auth/completeController.js"
+import { loginController } from "../controllers/auth/loginController.js"
 
 export const AuthAPI = new Hono()
 
-AuthAPI.post("/", authController)
-AuthAPI.post("/signup", signUpController)
-AuthAPI.post("/signin", signInController)
+AuthAPI.post("/login", loginController)
 AuthAPI.get("/verify", verifyController)
 AuthAPI.post("/complete", completeController)
