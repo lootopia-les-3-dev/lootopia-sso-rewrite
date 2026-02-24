@@ -1,10 +1,10 @@
 import type { Context } from "hono"
-import { getCookie } from "hono/cookie"
+import { getSignedCookie } from "hono/cookie"
 import { verify } from "hono/jwt"
 import { updateUserProfile } from "../../utils/users/updateUserProfile.js"
 
 export const completeController = async (c: Context) => {
-  const token = getCookie(c, "auth_token")
+  const token = await getSignedCookie(c, "auth_token", process.env.JWT_SECRET!)
 
   if (!token) {
     return c.redirect("/login")
