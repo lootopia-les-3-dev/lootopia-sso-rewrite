@@ -1,10 +1,7 @@
 import db from "../../db/connection.js"
 import { verificationTokens } from "../../db/schema.js"
 
-export const createVerificationToken = async (
-  userId: number,
-  callbackUrl?: string,
-) => {
+export const createVerificationToken = async (userId: number) => {
   const tokenBytes = new Uint8Array(24)
   crypto.getRandomValues(tokenBytes)
   const token = Buffer.from(tokenBytes).toString("base64url")

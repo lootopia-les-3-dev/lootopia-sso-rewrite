@@ -4,7 +4,7 @@ import { users } from "../../db/schema.js"
 
 export const updateUserProfile = async (
   userId: number,
-  data: { firstName: string; lastName: string },
+  { firstName, lastName }: { firstName: string; lastName: string },
 ) => {
-  await db.update(users).set(data).where(eq(users.id, userId))
+  await db.update(users).set({ firstName, lastName }).where(eq(users.id, userId))
 }

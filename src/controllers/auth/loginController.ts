@@ -19,7 +19,7 @@ export const loginController = async (c: Context) => {
     user = await createUser(email)
   }
 
-  const token = await createVerificationToken(user.id, callbackUrl)
+  const token = await createVerificationToken(user.id)
   const verifyParams = new URLSearchParams({ token })
   if (callbackUrl) verifyParams.set("callbackUrl", callbackUrl)
   const verifyUrl = `${process.env.BASE_URL}/api/auth/verify?${verifyParams.toString()}`
