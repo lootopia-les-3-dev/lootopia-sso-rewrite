@@ -1,27 +1,12 @@
 import type { Context } from "hono"
 import { deleteVerificationToken } from "../../utils/tokens/deleteVerificationToken.js"
-import { getVerificationToken } from "../../utils/tokens/getVerificationToken.js"
 import { getUserById } from "../../utils/users/getUserById.js"
 import { verifyUser } from "../../utils/users/verifyUser.js"
 import { setCookieController } from "../setCookie.js"
 
 export const verifyController = async (c: Context) => {
-  const { token, callbackUrl } = c.req.query()
-
-  if (!token) {
-    return c.json({ error: "Token is required" }, 400)
-  }
-
-  const record = await getVerificationToken(token)
-
-  if (!record) {
-    return c.json({ error: "Invalid token" }, 400)
-  }
-
-  if (new Date() > record.expiresAt) {
-    await deleteVerificationToken(record.id)
-    return c.json({ error: "Token expired" }, 400)
-  }
+  const { callbackUrl } = c.req.query()
+  const record = c.get("verificationRecord")
 
   await verifyUser(record.userId)
   await deleteVerificationToken(record.id)

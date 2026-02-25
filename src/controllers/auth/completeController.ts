@@ -1,5 +1,5 @@
 import type { Context } from "hono"
-  import { getSignedCookie } from "hono/cookie"
+import { getSignedCookie } from "hono/cookie"
 import { verify } from "hono/jwt"
 import { updateUserProfile } from "../../utils/users/updateUserProfile.js"
 
