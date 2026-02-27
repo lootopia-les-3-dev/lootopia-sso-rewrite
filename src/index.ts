@@ -1,11 +1,14 @@
-import "dotenv/config"
 import { serve } from "@hono/node-server"
 import { serveStatic } from "@hono/node-server/serve-static"
+import "dotenv/config"
 import { Hono } from "hono"
+import { requestLogger } from "./middleware/requestLogger.js"
 import { API } from "./routes/api.js"
 import { Front } from "./routes/front.js"
 
 const app = new Hono()
+
+app.use("*", requestLogger) 
 
 app.use("/styles/*", serveStatic({ root: "./src" }))
 app.use("/fonts/*", serveStatic({ root: "./public" }))

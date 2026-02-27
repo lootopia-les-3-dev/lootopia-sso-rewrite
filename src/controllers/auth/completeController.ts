@@ -10,9 +10,9 @@ export const completeController = async (c: Context) => {
   }
 
   const body = await c.req.parseBody()
-  const firstName = body.firstName as string
-  const lastName = body.lastName as string
-  const callbackUrl = body.callbackUrl as string
+  const firstName = body["firstName"] as string
+  const lastName = body["lastName"] as string
+  const callbackUrl = body["callbackUrl"] as string
 
   if (!firstName || !lastName) {
     return c.json({ error: "First name and last name are required" }, 400)
