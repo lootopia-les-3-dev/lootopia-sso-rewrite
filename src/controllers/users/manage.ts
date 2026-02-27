@@ -1,5 +1,5 @@
 import type { Context } from "hono"
-import { createUser } from "../../utils/users/createUser.js"
+import { createUser } from "../../utils/users/insertUser.js"
 
 export const createUserController = async (c: Context) => {
   const { email } = await c.req.json()

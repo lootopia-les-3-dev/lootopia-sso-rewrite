@@ -1,8 +1,7 @@
 import type { Context } from "hono"
-import { sendEmail } from "../../utils/send/sendEmail.js"
-import { createVerificationToken } from "../../utils/tokens/createVerificationToken.js"
-import { createUser } from "../../utils/users/createUser.js"
-import { getUserByEmail } from "../../utils/users/getUserByEmail.js"
+import { sendVerificationEmail } from "../../services/emailService.js"
+import { findOrCreateUser } from "../../services/userService.js"
+import { createVerificationToken } from "../../services/authService.js"
 
 export const loginController = async (c: Context) => {
   const body = await c.req.parseBody()
@@ -13,26 +12,10 @@ export const loginController = async (c: Context) => {
     return c.json({ error: "Email is required" }, 400)
   }
 
-  let user = await getUserByEmail(email)
-
-  if (!user) {
-    user = await createUser(email)
-  }
-
+  const user = await findOrCreateUser(email)
   const token = await createVerificationToken(user.id)
-  const verifyParams = new URLSearchParams({ token })
 
-  if (callbackUrl) {
-    verifyParams.set("callbackUrl", callbackUrl)
-  }
-
-  const verifyUrl = `${process.env.BASE_URL}/api/auth/verify?${verifyParams.toString()}`
-
-  await sendEmail(
-    email,
-    "Connexion à Lootopia",
-    `Cliquez sur ce lien pour vous connecter : ${verifyUrl}`,
-  )
+  await sendVerificationEmail(email, token, callbackUrl)
 
   return c.redirect("/verify")
 }
