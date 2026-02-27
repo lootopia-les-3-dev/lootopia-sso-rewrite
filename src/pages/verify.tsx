@@ -1,3 +1,5 @@
+import React from "react"
+
 const VerifyPage = () => {
   return (
     <html lang="fr">
@@ -8,7 +10,7 @@ const VerifyPage = () => {
         <link rel="stylesheet" href="/styles/globals.css" />
       </head>
       <body>
-        <div class="card">
+        <div className="card">
           <h1>Vérifiez votre email</h1>
           <p>
             Un lien de connexion vous a été envoyé. Veuillez cliquer sur le lien

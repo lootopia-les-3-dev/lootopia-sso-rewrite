@@ -1,3 +1,4 @@
+import React from "react"
 import { LoginForm } from "../components/forms/LoginForm.js"
 
 const LoginPage = ({ callbackUrl }: { callbackUrl: string }) => {
@@ -10,7 +11,7 @@ const LoginPage = ({ callbackUrl }: { callbackUrl: string }) => {
         <link rel="stylesheet" href="/styles/globals.css" />
       </head>
       <body>
-        <div class="card">
+        <div className="card">
           <h1>Connexion à Lootopia</h1>
           <LoginForm callbackUrl={callbackUrl} />
         </div>

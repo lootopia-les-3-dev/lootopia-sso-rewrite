@@ -1,20 +1,11 @@
 import type { Context } from "hono"
-import { getSignedCookie } from "hono/cookie"
-import { verify } from "hono/jwt"
+import { getAuthUser } from "../../utils/auth/getAuthUser.js"
 import { updateUserProfile } from "../../utils/users/updateUserProfile.js"
 
 export const completeController = async (c: Context) => {
-  const token = await getSignedCookie(c, process.env.JWT_SECRET!, "auth_token")
+  const user = await getAuthUser(c)
 
-  if (!token) {
-    return c.redirect("/login")
-  }
-
-  let userId: number
-  try {
-    const payload = await verify(token, process.env.JWT_SECRET!, "HS256")
-    userId = Number(payload.sub)
-  } catch {
+  if (!user) {
     return c.redirect("/login")
   }
 
@@ -27,7 +18,7 @@ export const completeController = async (c: Context) => {
     return c.json({ error: "First name and last name are required" }, 400)
   }
 
-  await updateUserProfile(userId, { firstName, lastName })
+  await updateUserProfile(user.id, { firstName, lastName })
 
   return c.redirect(callbackUrl)
 }

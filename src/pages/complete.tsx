@@ -1,3 +1,5 @@
+import React from "react"
+
 type CompletePageProps = {
   callbackUrl?: string
 }
@@ -12,14 +14,14 @@ const CompletePage = ({ callbackUrl }: CompletePageProps) => {
         <link rel="stylesheet" href="/styles/globals.css" />
       </head>
       <body>
-        <div class="card">
+        <div className="card">
           <h1>Compléter votre profil</h1>
           <form method="post" action="/api/auth/complete">
             {callbackUrl && (
               <input type="hidden" name="callbackUrl" value={callbackUrl} />
             )}
-            <div class="form-group">
-              <label for="firstName">Prénom</label>
+            <div className="form-group">
+              <label htmlFor="firstName">Prénom</label>
               <input
                 id="firstName"
                 name="firstName"
@@ -28,8 +30,8 @@ const CompletePage = ({ callbackUrl }: CompletePageProps) => {
                 required
               />
             </div>
-            <div class="form-group">
-              <label for="lastName">Nom</label>
+            <div className="form-group">
+              <label htmlFor="lastName">Nom</label>
               <input
                 id="lastName"
                 name="lastName"
