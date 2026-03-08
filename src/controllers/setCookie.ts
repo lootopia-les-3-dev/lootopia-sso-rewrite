@@ -1,9 +1,12 @@
 import type { Context } from "hono"
-import { sign } from "hono/jwt"
 import { setSignedCookie } from "hono/cookie"
+import { sign } from "hono/jwt"
 import type { User } from "../types/user.js"
 
 export const setCookieController = async (c: Context, user: User) => {
+  const url = new URL(c.req.url)
+  const globalDomain = url.host.split(".").slice(-2).join(".")
+
   const payload = {
     sub: String(user.id),
     email: user.email,
@@ -15,7 +18,7 @@ export const setCookieController = async (c: Context, user: User) => {
   await setSignedCookie(c, "auth_token", token, process.env.JWT_SECRET!, {
     httpOnly: true,
     secure: true,
-    domain: ".lootopia.io",
+    domain: `.${globalDomain}`,
     sameSite: "Lax",
     path: "/",
     maxAge: 60 * 60 * 24 * 7,
