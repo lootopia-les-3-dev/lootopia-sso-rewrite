@@ -15,6 +15,7 @@ export const setCookieController = async (c: Context, user: User) => {
     exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
   }
   const token = await sign(payload, process.env.JWT_SECRET!, "HS256")
+  
   await setSignedCookie(c, "auth_token", token, process.env.JWT_SECRET!, {
     httpOnly: true,
     secure: true,

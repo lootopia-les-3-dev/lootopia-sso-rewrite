@@ -1,8 +1,7 @@
 import type { Context } from "hono"
-import { getAuthUser } from "../../utils/auth/getAuthUser.js"
 
 export const meController = async (c: Context) => {
-  const user = await getAuthUser(c)
+  const user = c.get("user")
 
   if (!user) {
     return c.json({ error: "Unauthorized" }, 401)

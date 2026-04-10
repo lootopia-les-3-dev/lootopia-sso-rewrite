@@ -1,9 +1,8 @@
 import type { Context } from "hono"
-import { getAuthUser } from "../../utils/auth/getAuthUser.js"
 import { updateUserProfile } from "../../utils/users/updateUserProfile.js"
 
 export const completeController = async (c: Context) => {
-  const user = await getAuthUser(c)
+  const user = c.get("user")
 
   if (!user) {
     return c.redirect("/login")

@@ -4,9 +4,14 @@ import CompletePage from "../pages/complete.js"
 import LoginPage from "../pages/login.js"
 import VerifyPage from "../pages/verify.js"
 import AccountPage from "../pages/account.js"
-import { getAuthUser } from "../utils/auth/getAuthUser.js"
+import type { User } from "../types/user.js"
+import { authMiddleware } from "../middleware/auth.js"
 
-export const Front = new Hono()
+type Variables = {
+  user?: User
+}
+
+export const Front = new Hono<{ Variables: Variables }>()
 
 Front.get("/login", (c) => {
   const { callbackUrl } = c.req.query()
@@ -22,8 +27,8 @@ Front.get("/complete", (c) => {
   return c.html(<CompletePage callbackUrl={callbackUrl} />)
 })
 
-Front.get("/account", async (c) => {
-  const user = await getAuthUser(c)
+Front.get("/account", authMiddleware, async (c) => {
+  const user = c.get("user")
 
   if (!user) {
     return c.redirect("/login")
