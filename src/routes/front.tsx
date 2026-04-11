@@ -30,7 +30,7 @@ Front.get("/complete", (c) => {
 Front.get("/account", authMiddleware, async (c) => {
   const user = c.get("user")
 
-  if (!user) {
+  if (!user || !user.firstName || !user.lastName) {
     return c.redirect("/login")
   }
 
