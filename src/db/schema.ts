@@ -27,5 +27,6 @@ export const verificationTokens = pgTable("verification_tokens", {
     .notNull()
     .references(() => users.id),
   token: varchar({ length: 255 }).notNull().unique(),
+  code: varchar({ length: 6 }).notNull(),
   expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
 })
