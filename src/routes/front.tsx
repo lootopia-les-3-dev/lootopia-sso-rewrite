@@ -2,7 +2,9 @@ import React from "react"
 import { Hono } from "hono"
 import CompletePage from "../pages/complete.js"
 import LoginPage from "../pages/login.js"
+import LoginMobilePage from "../pages/login-mobile.js"
 import VerifyPage from "../pages/verify.js"
+import VerifyCodePage from "../pages/verify-code.js"
 import AccountPage from "../pages/account.js"
 import { getAuthUser } from "../utils/auth/getAuthUser.js"
 
@@ -15,6 +17,16 @@ Front.get("/login", (c) => {
 
 Front.get("/verify", (c) => {
   return c.html(<VerifyPage />)
+})
+
+Front.get("/login-mobile", (c) => {
+  const { callbackUrl } = c.req.query()
+  return c.html(<LoginMobilePage callbackUrl={callbackUrl} />)
+})
+
+Front.get("/verify-code", (c) => {
+  const { token, callbackUrl } = c.req.query()
+  return c.html(<VerifyCodePage token={token} callbackUrl={callbackUrl ?? ""} />)
 })
 
 Front.get("/complete", (c) => {

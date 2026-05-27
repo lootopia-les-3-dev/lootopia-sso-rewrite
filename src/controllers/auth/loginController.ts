@@ -13,7 +13,7 @@ export const loginController = async (c: Context) => {
   }
 
   const user = await findOrCreateUser(email)
-  const token = await createVerificationToken(user.id)
+  const { token } = await createVerificationToken(user.id)
 
   await sendVerificationEmail(email, token, callbackUrl)
 

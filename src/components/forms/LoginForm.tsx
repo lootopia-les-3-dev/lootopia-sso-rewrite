@@ -1,8 +1,8 @@
 import React from "react"
 
-export const LoginForm = ({ callbackUrl }: { callbackUrl: string }) => {
+export const LoginForm = ({ callbackUrl, action = "/api/auth/login" }: { callbackUrl: string; action?: string }) => {
   return (
-    <form method="post" action="/api/auth/login">
+    <form method="post" action={action}>
       <input type="hidden" name="callbackUrl" value={callbackUrl} />
 
       <div className="form-group">
