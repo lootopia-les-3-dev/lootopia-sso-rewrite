@@ -3,7 +3,7 @@ import { setSignedCookie } from "hono/cookie"
 import { sign } from "hono/jwt"
 import type { User } from "../types/user.js"
 
-export const setCookieController = async (c: Context, user: User) => {
+export const setCookieController = async (c: Context, user: User): Promise<string> => {
   const url = new URL(c.req.url)
   const globalDomain = url.host.split(".").slice(-2).join(".")
 
@@ -23,6 +23,7 @@ export const setCookieController = async (c: Context, user: User) => {
     path: "/",
     maxAge: 60 * 60 * 24 * 7,
   })
+  return token
 }
 
 export default setCookieController

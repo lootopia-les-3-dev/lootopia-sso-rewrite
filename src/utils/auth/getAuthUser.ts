@@ -5,7 +5,12 @@ import { getUserById } from "../users/getUserById.js"
 import type { User } from "../../types/user.js"
 
 export const getAuthUser = async (c: Context): Promise<User | null> => {
-  const token = await getSignedCookie(c, process.env.JWT_SECRET!, "auth_token")
+  const cookieToken = await getSignedCookie(c, process.env.JWT_SECRET!, "auth_token")
+  const authHeader = c.req.header("authorization") ?? c.req.header("Authorization")
+  const bearerToken = authHeader?.toLowerCase().startsWith("bearer ")
+    ? authHeader.slice(7).trim()
+    : null
+  const token = cookieToken || bearerToken
 
   if (!token) {
     return null

@@ -1,6 +1,9 @@
 import type { Context } from "hono"
 import { getAuthUser } from "../../utils/auth/getAuthUser.js"
+import { getUserById } from "../../utils/users/getUserById.js"
 import { updateUserProfile } from "../../utils/users/updateUserProfile.js"
+import { setCookieController } from "../setCookie.js"
+import { buildCallbackRedirect } from "../../utils/auth/buildCallbackRedirect.js"
 
 export const completeController = async (c: Context) => {
   const user = await getAuthUser(c)
@@ -20,5 +23,8 @@ export const completeController = async (c: Context) => {
 
   await updateUserProfile(user.id, { firstName, lastName })
 
-  return c.redirect(callbackUrl)
+  const updated = (await getUserById(user.id)) ?? user
+  const jwt = await setCookieController(c, updated)
+
+  return c.redirect(buildCallbackRedirect(callbackUrl, jwt))
 }

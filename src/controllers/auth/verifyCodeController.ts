@@ -4,6 +4,7 @@ import { deleteVerificationToken } from "../../utils/tokens/deleteVerificationTo
 import { getUserById } from "../../utils/users/getUserById.js"
 import { verifyUser } from "../../utils/users/verifyUser.js"
 import { setCookieController } from "../setCookie.js"
+import { buildCallbackRedirect } from "../../utils/auth/buildCallbackRedirect.js"
 
 export const verifyCodeController = async (c: Context) => {
   const body = await c.req.parseBody()
@@ -35,10 +36,10 @@ export const verifyCodeController = async (c: Context) => {
     return c.json({ error: "User not found" }, 400)
   }
 
-  await setCookieController(c, user)
+  const jwt = await setCookieController(c, user)
 
   if (user.firstName && user.lastName) {
-    return c.redirect(callbackUrl)
+    return c.redirect(buildCallbackRedirect(callbackUrl, jwt))
   }
 
   const params = new URLSearchParams()
