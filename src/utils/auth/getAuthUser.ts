@@ -1,8 +1,8 @@
 import type { Context } from "hono"
 import { getSignedCookie } from "hono/cookie"
 import { verify } from "hono/jwt"
-import { getUserById } from "../users/getUserById.js"
 import type { User } from "../../types/user.js"
+import { getUserById } from "../users/getUserById.js"
 
 export const getAuthUser = async (c: Context): Promise<User | null> => {
   const token = await getSignedCookie(c, process.env.JWT_SECRET!, "auth_token")
@@ -18,6 +18,7 @@ export const getAuthUser = async (c: Context): Promise<User | null> => {
   } catch {
     return null
   }
+  console.log(userId)
 
   return getUserById(userId)
 }

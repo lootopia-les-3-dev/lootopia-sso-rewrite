@@ -2,6 +2,7 @@ import type { Context } from "hono"
 import { getAuthUser } from "../../utils/auth/getAuthUser.js"
 
 export const meController = async (c: Context) => {
+  console.log(c)
   const user = await getAuthUser(c)
 
   if (!user) {
