@@ -7,6 +7,8 @@ import { getUserById } from "../users/getUserById.js"
 export const getAuthUser = async (c: Context): Promise<User | null> => {
   const token = await getSignedCookie(c, process.env.JWT_SECRET!, "auth_token")
 
+  console.log("Token:", token)
+
   if (!token) {
     return null
   }
