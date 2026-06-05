@@ -4,6 +4,7 @@ import { loginController } from "../controllers/auth/loginController.js"
 import { loginMobileController } from "../controllers/auth/loginMobileController.js"
 import { logoutController } from "../controllers/auth/logoutController.js"
 import { meController } from "../controllers/auth/meController.js"
+import { tokenController } from "../controllers/auth/tokenController.js"
 import { verifyCodeController } from "../controllers/auth/verifyCodeController.js"
 import { verifyController } from "../controllers/auth/verifyController.js"
 import { verifyTokenMiddleware } from "../middleware/verifyToken.js"
@@ -16,4 +17,5 @@ AuthAPI.get("/verify", verifyTokenMiddleware, verifyController)
 AuthAPI.post("/verify-code", verifyCodeController)
 AuthAPI.post("/complete", completeController)
 AuthAPI.get("/me", meController)
+AuthAPI.get("/token", tokenController)
 AuthAPI.post("/logout", logoutController)
