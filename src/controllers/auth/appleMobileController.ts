@@ -1,5 +1,4 @@
 import type { Context } from "hono"
-import { getCookie } from "hono/cookie"
 import { verifyAppleMobileToken } from "../../services/appleService.js"
 import { findOrCreateUser } from "../../services/userService.js"
 import { setCookieController } from "../setCookie.js"
@@ -24,8 +23,7 @@ export const appleMobileController = async (c: Context) => {
   }
 
   const user = await findOrCreateUser(payload.email)
-  await setCookieController(c, user)
-  const token = getCookie(c, "auth_token")
+  const token = await setCookieController(c, user)
 
   return c.json({
     token,
