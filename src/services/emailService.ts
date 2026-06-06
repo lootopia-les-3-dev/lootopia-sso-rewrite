@@ -17,11 +17,12 @@ export const sendVerificationEmail = async (email: string, token: string, callba
 }
 
 export const sendVerificationEmailMobileLink = async (email: string, token: string) => {
-  const url = `${process.env.BASE_URL}/api/auth/verify?token=${encodeURIComponent(token)}`
+  const deepLink = `lootopia://auth/verify?token=${encodeURIComponent(token)}`
+  const webLink = `${process.env.BASE_URL}/api/auth/verify?token=${encodeURIComponent(token)}`
 
   await sendEmail(
     email,
     "Connexion à Lootopia",
-    `Cliquez sur ce lien depuis votre iPhone pour vous connecter :\n${url}\n\nSi vous n'avez pas demandé cette connexion, ignorez cet email.`,
+    `Connectez-vous à Lootopia :\n\n${deepLink}\n\nSi le lien ne fonctionne pas, ouvrez ce lien depuis votre iPhone :\n${webLink}\n\nSi vous n'avez pas demandé cette connexion, ignorez cet email.`,
   )
 }
