@@ -1,5 +1,4 @@
 import type { Context } from "hono"
-import { getCookie } from "hono/cookie"
 import { getVerificationTokenByCode } from "../../utils/tokens/getVerificationTokenByCode.js"
 import { deleteVerificationToken } from "../../utils/tokens/deleteVerificationToken.js"
 import { getUserById } from "../../utils/users/getUserById.js"
@@ -36,12 +35,11 @@ export const verifyCodeController = async (c: Context) => {
     return c.json({ error: "User not found" }, 400)
   }
 
-  await setCookieController(c, user)
+  const jwtToken = await setCookieController(c, user)
 
   if (c.req.header("Accept")?.includes("application/json")) {
-    const raw = getCookie(c, "auth_token")
     return c.json({
-      token: raw,
+      token: jwtToken,
       user: {
         id: user.id,
         email: user.email,
