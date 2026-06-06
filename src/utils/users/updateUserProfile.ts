@@ -7,7 +7,7 @@ export const updateUserProfile = async (
   userId: number,
   { firstName, lastName }: { firstName: string; lastName: string },
 ) => {
-  await db.update(users).set({ firstName, lastName }).where(eq(users.id, userId))
+  const [updated] = await db.update(users).set({ firstName, lastName }).where(eq(users.id, userId)).returning()
 
   const cached = await redis.get(`user:id:${userId}`)
   if (cached) {
@@ -15,4 +15,6 @@ export const updateUserProfile = async (
     await redis.del(`user:email:${user.email}`)
   }
   await redis.del(`user:id:${userId}`)
+
+  return updated
 }

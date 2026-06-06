@@ -1,4 +1,6 @@
 import { Hono } from "hono"
+import { appleCallbackController, appleRedirectController } from "../controllers/auth/appleController.js"
+import { appleMobileController } from "../controllers/auth/appleMobileController.js"
 import { completeController } from "../controllers/auth/completeController.js"
 import { loginController } from "../controllers/auth/loginController.js"
 import { loginMobileController } from "../controllers/auth/loginMobileController.js"
@@ -19,3 +21,8 @@ AuthAPI.post("/complete", completeController)
 AuthAPI.get("/me", meController)
 AuthAPI.get("/token", tokenController)
 AuthAPI.post("/logout", logoutController)
+
+// Apple Sign In
+AuthAPI.get("/apple", appleRedirectController)
+AuthAPI.post("/apple/callback", appleCallbackController)
+AuthAPI.post("/apple/mobile", appleMobileController)

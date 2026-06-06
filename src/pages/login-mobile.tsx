@@ -13,7 +13,7 @@ const LoginMobilePage = ({ callbackUrl }: { callbackUrl: string }) => {
       <body>
         <div className="card">
           <h1>Connexion à Lootopia</h1>
-          <LoginForm callbackUrl={callbackUrl} action="/api/auth/login-mobile" />
+          <LoginForm callbackUrl={callbackUrl} action="/api/auth/login" />
         </div>
       </body>
     </html>

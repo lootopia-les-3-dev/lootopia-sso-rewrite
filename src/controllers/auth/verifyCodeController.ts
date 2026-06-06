@@ -1,4 +1,5 @@
 import type { Context } from "hono"
+import { getCookie } from "hono/cookie"
 import { getVerificationTokenByCode } from "../../utils/tokens/getVerificationTokenByCode.js"
 import { deleteVerificationToken } from "../../utils/tokens/deleteVerificationToken.js"
 import { getUserById } from "../../utils/users/getUserById.js"
@@ -36,6 +37,20 @@ export const verifyCodeController = async (c: Context) => {
   }
 
   await setCookieController(c, user)
+
+  if (c.req.header("Accept")?.includes("application/json")) {
+    const raw = getCookie(c, "auth_token")
+    return c.json({
+      token: raw,
+      user: {
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        profileComplete: !!(user.firstName && user.lastName),
+      },
+    })
+  }
 
   if (user.firstName && user.lastName) {
     return c.redirect(callbackUrl)
