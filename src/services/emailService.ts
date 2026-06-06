@@ -16,10 +16,12 @@ export const sendVerificationEmail = async (email: string, token: string, callba
   )
 }
 
-export const sendVerificationEmailMobile = async (email: string, code: string) => {
+export const sendVerificationEmailMobileLink = async (email: string, token: string) => {
+  const url = `lootopia://auth/verify?token=${encodeURIComponent(token)}`
+
   await sendEmail(
     email,
     "Connexion à Lootopia",
-    `Votre code de connexion : ${code}\n\nSi vous n'avez pas demandé cette connexion, ignorez cet email.`,
+    `Cliquez sur ce lien depuis votre iPhone pour vous connecter : ${url}\n\nSi vous n'avez pas demandé cette connexion, ignorez cet email.`,
   )
 }

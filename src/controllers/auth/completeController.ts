@@ -6,6 +6,9 @@ export const completeController = async (c: Context) => {
   const user = await getAuthUser(c)
 
   if (!user) {
+    if (c.req.header("Accept")?.includes("application/json")) {
+      return c.json({ error: "Unauthorized" }, 401)
+    }
     return c.redirect("/login")
   }
 
@@ -18,7 +21,11 @@ export const completeController = async (c: Context) => {
     return c.json({ error: "First name and last name are required" }, 400)
   }
 
-  await updateUserProfile(user.id, { firstName, lastName })
+  const updated = await updateUserProfile(user.id, { firstName, lastName })
+
+  if (c.req.header("Accept")?.includes("application/json")) {
+    return c.json({ id: updated.id, email: updated.email, firstName: updated.firstName, lastName: updated.lastName })
+  }
 
   return c.redirect(callbackUrl)
 }

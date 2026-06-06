@@ -1,24 +1,20 @@
 import type { Context } from "hono"
-import { sendVerificationEmailMobile } from "../../services/emailService.js"
+import { sendVerificationEmailMobileLink } from "../../services/emailService.js"
 import { createVerificationToken } from "../../services/authService.js"
 import { findOrCreateUser } from "../../services/userService.js"
 
 export const loginMobileController = async (c: Context) => {
   const body = await c.req.parseBody()
   const email = body["email"] as string
-  const callbackUrl = body["callbackUrl"] as string
 
   if (!email) {
     return c.json({ error: "Email is required" }, 400)
   }
 
   const user = await findOrCreateUser(email)
-  const { token, code } = await createVerificationToken(user.id)
+  const { token } = await createVerificationToken(user.id)
 
-  await sendVerificationEmailMobile(email, code)
+  await sendVerificationEmailMobileLink(email, token)
 
-  const params = new URLSearchParams({ token })
-  if (callbackUrl) params.set("callbackUrl", callbackUrl)
-
-  return c.redirect("/verify-code?" + params.toString())
+  return c.json({ ok: true })
 }
