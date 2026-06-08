@@ -467,6 +467,41 @@ export const openApiSpec = {
         },
       },
     },
+    "/api/auth/account": {
+      delete: {
+        tags: ["Auth"],
+        summary: "Delete account",
+        operationId: "deleteAccount",
+        description:
+          "Permanently deletes the authenticated user's account and all associated data (RGPD). Cascades to the Lootopia API, clears the auth cookie, and sends a confirmation email.",
+        security: [{ cookieAuth: [] }],
+        responses: {
+          "200": {
+            description: "Account deleted",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: { success: { type: "boolean" } },
+                },
+              },
+            },
+          },
+          "401": {
+            description: "Unauthorized",
+            content: {
+              "application/json": { schema: { $ref: "#/components/schemas/Error" } },
+            },
+          },
+          "502": {
+            description: "Lootopia API failed to delete user data",
+            content: {
+              "application/json": { schema: { $ref: "#/components/schemas/Error" } },
+            },
+          },
+        },
+      },
+    },
     "/api/auth/logout": {
       post: {
         tags: ["Auth"],
