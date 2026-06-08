@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "concurrently \"tsx watch src/index.ts\" \"tailwindcss -i src/styles/input.css -o src/styles/globals.css --watch\"",
     "build:css": "tailwindcss -i src/styles/input.css -o src/styles/globals.css --minify",
-    "build": "pnpm build:css && tsc",
+    "build": "tsc",
     "start": "node dist/src/index.js",
     "lint": "eslint . --ext .ts,.tsx"
   },
