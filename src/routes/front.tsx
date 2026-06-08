@@ -6,6 +6,7 @@ import LoginMobilePage from "../pages/login-mobile.js"
 import VerifyPage from "../pages/verify.js"
 import VerifyCodePage from "../pages/verify-code.js"
 import AccountPage from "../pages/account.js"
+import ProfilePage from "../pages/profile.js"
 import { getAuthUser } from "../utils/auth/getAuthUser.js"
 
 export const Front = new Hono()
@@ -42,4 +43,14 @@ Front.get("/account", async (c) => {
   }
 
   return c.html(<AccountPage user={user} />)
+})
+
+Front.get("/profile", async (c) => {
+  const user = await getAuthUser(c)
+
+  if (!user) {
+    return c.redirect("/login")
+  }
+
+  return c.html(<ProfilePage user={user} />)
 })
