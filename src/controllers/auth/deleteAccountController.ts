@@ -1,5 +1,6 @@
 import type { Context } from "hono"
 import { deleteCookie, getCookie } from "hono/cookie"
+import { sendAccountDeletionEmail } from "../../services/emailService.js"
 import { getAuthUser } from "../../utils/auth/getAuthUser.js"
 import { deleteUser } from "../../utils/users/deleteUser.js"
 
@@ -24,7 +25,11 @@ export const deleteAccountController = async (c: Context) => {
     }
   }
 
+  const { email } = user
+
   await deleteUser(user.id)
+
+  sendAccountDeletionEmail(email).catch(() => {})
 
   const url = new URL(c.req.url)
   const globalDomain = url.host.split(".").slice(-2).join(".")
