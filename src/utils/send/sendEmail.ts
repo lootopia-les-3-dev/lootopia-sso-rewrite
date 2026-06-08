@@ -1,9 +1,9 @@
 import axios from "axios"
 
-export const sendEmail = async (to: string, subject: string, body: string, html?: string) => {
+export const sendEmail = async (to: string, subject: string, body: string) => {
   await axios.post(
     `${process.env.NOTIFS_API_URL}/send/email`,
-    { to, subject, body, ...(html ? { html } : {}) },
+    { to, subject, body },
     {
       headers: { "x-api-key": process.env.NOTIFS_API_KEY },
     },
