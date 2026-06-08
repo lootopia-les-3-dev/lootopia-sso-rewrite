@@ -35,13 +35,13 @@ export const sendVerificationEmailMobileLink = async (email: string, token: stri
     body: "Appuyez sur le bouton ci-dessous pour vous connecter depuis votre iPhone.",
     buttonLabel: "Ouvrir l'application",
     buttonUrl: deepLink,
-    footerNote: `Le lien ne fonctionne pas ? <a href="${webLink}" style="color:#5c4d5e;text-decoration:underline;">Connectez-vous depuis votre navigateur</a><br/>Si vous n'avez pas demandé cette connexion, ignorez cet email.`,
+    footerNote: `Si vous n'avez pas demandé cette connexion, ignorez cet email.`,
   })
 
   await sendEmail(
     email,
     "Connexion à Lootopia",
-    `Connectez-vous à Lootopia :\n\n${deepLink}\n\nSi le lien ne fonctionne pas, ouvrez ce lien depuis votre iPhone :\n${webLink}\n\nSi vous n'avez pas demandé cette connexion, ignorez cet email.`,
+    `Connectez-vous à Lootopia :\n\n${deepLink}\n\nSi vous n'avez pas demandé cette connexion, ignorez cet email.`,
     html,
   )
 }
