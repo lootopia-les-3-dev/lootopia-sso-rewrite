@@ -4,6 +4,7 @@ import { appleMobileController } from "../controllers/auth/appleMobileController
 import { completeController } from "../controllers/auth/completeController.js"
 import { loginController } from "../controllers/auth/loginController.js"
 import { loginMobileController } from "../controllers/auth/loginMobileController.js"
+import { deleteAccountController } from "../controllers/auth/deleteAccountController.js"
 import { logoutController } from "../controllers/auth/logoutController.js"
 import { meController } from "../controllers/auth/meController.js"
 import { tokenController } from "../controllers/auth/tokenController.js"
@@ -21,6 +22,7 @@ AuthAPI.post("/complete", completeController)
 AuthAPI.get("/me", meController)
 AuthAPI.get("/token", tokenController)
 AuthAPI.post("/logout", logoutController)
+AuthAPI.delete("/account", deleteAccountController)
 
 // Apple Sign In
 AuthAPI.get("/apple", appleRedirectController)
