@@ -5,7 +5,8 @@ import { setCookieController } from "../setCookie.js"
 
 // GET /api/auth/apple — redirect to Apple OAuth
 export const appleRedirectController = (c: Context) => {
-  const url = getAppleAuthUrl()
+  const callbackUrl = c.req.query("callbackUrl")
+  const url = getAppleAuthUrl(callbackUrl)
   return c.redirect(url)
 }
 
@@ -13,7 +14,8 @@ export const appleRedirectController = (c: Context) => {
 export const appleCallbackController = async (c: Context) => {
   const body = await c.req.parseBody()
   const code = body["code"] as string
-  const callbackUrl = (c.req.query("callbackUrl") ?? body["state"] ?? "") as string
+  const rawState = (body["state"] ?? "") as string
+  const callbackUrl = rawState.includes("|") ? rawState.split("|").slice(1).join("|") : ""
 
   if (!code) {
     return c.json({ error: "Missing code" }, 400)
