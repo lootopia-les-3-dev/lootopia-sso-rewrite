@@ -6,12 +6,15 @@ const APPLE_KEY_ID = process.env.APPLE_KEY_ID! // YP6768CH75
 const APPLE_PRIVATE_KEY = process.env.APPLE_PRIVATE_KEY!
 const APPLE_REDIRECT_URI = process.env.APPLE_REDIRECT_URI!
 
-export const getAppleAuthUrl = () => {
+export const getAppleAuthUrl = (callbackUrl?: string) => {
+  const state = callbackUrl
+    ? `${crypto.randomUUID()}|${callbackUrl}`
+    : crypto.randomUUID()
   return appleSignin.getAuthorizationUrl({
     clientID: APPLE_CLIENT_ID,
     redirectUri: APPLE_REDIRECT_URI,
     scope: "name email",
-    state: crypto.randomUUID(),
+    state,
     responseMode: "form_post",
   })
 }
