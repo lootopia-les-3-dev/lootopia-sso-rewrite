@@ -11,7 +11,13 @@ import { getAuthUser } from "../utils/auth/getAuthUser.js"
 
 export const Front = new Hono()
 
-Front.get("/login", (c) => {
+Front.get("/login", async (c) => {
+  const user = await getAuthUser(c)
+  if (user) {
+    const base = new URL(process.env.BASE_URL!)
+    const rootUrl = `${base.protocol}//${base.hostname.split(".").slice(-2).join(".")}`
+    return c.redirect(rootUrl)
+  }
   const { callbackUrl } = c.req.query()
   return c.html(<LoginPage callbackUrl={callbackUrl} />)
 })
